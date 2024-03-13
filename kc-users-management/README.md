@@ -3,39 +3,48 @@
 KEYCLOAK USERS MANAGEMENT
 
 ## Install the dependencies
+
 ```bash
 yarn
-# or
-npm install
+```
+
+### Open hosts file:
+
+```sh
+sudo nano /etc/hosts
+```
+
+### Add new line:
+
+```sh
+127.0.0.1       frontend
 ```
 
 ### Start the app in development mode (hot-code reloading, error reporting, etc.)
+
 ```bash
-quasar dev
+docker-compose up
 ```
 
+### Config DB
 
-### Lint the files
 ```bash
-yarn lint
-# or
-npm run lint
+Open DB and create schema "keycloak"
 ```
 
+### Config Keycloak:
 
-### Format the files
-```bash
-yarn format
-# or
-npm run format
+```sh
+Create realm "firstrealm"
+Create client "frontend" (Client Protocol: openid-connect / Access Type: public)
 ```
-
-
 
 ### Build the app for production
+
 ```bash
 quasar build
 ```
 
 ### Customize the configuration
+
 See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js).
