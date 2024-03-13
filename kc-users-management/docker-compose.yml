@@ -22,8 +22,9 @@ services:
       - "8080:8080"
     environment:
       - CLIENT_ID=frontend
-      - KC_GATEWAY=http://keycloak/auth
+      - KC_GATEWAY=http://frontend/auth
       - MULTITENANCY=true
+      - REALM=firstrealm
 
   db-keycloak:
     container_name: db-keycloak
