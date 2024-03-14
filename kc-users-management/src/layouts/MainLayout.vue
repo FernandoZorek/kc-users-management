@@ -15,7 +15,10 @@
           Quasar App
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <div>
+          <LanguageSelector
+          />
+        </div>
       </q-toolbar>
     </q-header>
 
@@ -28,11 +31,11 @@
         <q-item-label
           header
         >
-          Essential Links
+          {{ i18n.t('usersManagement') }}
         </q-item-label>
 
         <EssentialLink
-          v-for="link in essentialLinks"
+          v-for="link in linksList"
           :key="link.title"
           v-bind="link"
         />
@@ -45,10 +48,13 @@
   </q-layout>
 </template>
 
-<script>
-import { defineComponent, ref } from 'vue'
+<script setup>
+import { ref, inject } from 'vue'
 import EssentialLink from 'components/EssentialLink.vue'
+import LanguageSelector from 'components/LanguageSelector.vue'
 
+
+const i18n = inject('i18n')
 const linksList = [
   {
     title: 'Docs',
@@ -94,23 +100,9 @@ const linksList = [
   }
 ]
 
-export default defineComponent({
-  name: 'MainLayout',
 
-  components: {
-    EssentialLink
-  },
-
-  setup () {
-    const leftDrawerOpen = ref(false)
-
-    return {
-      essentialLinks: linksList,
-      leftDrawerOpen,
-      toggleLeftDrawer () {
-        leftDrawerOpen.value = !leftDrawerOpen.value
-      }
-    }
+  const leftDrawerOpen = ref(false)
+  const toggleLeftDrawer = () => {
+    leftDrawerOpen.value = !leftDrawerOpen.value
   }
-})
 </script>
