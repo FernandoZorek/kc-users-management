@@ -12,32 +12,23 @@
         />
 
         <q-toolbar-title>
-          {{ i18n.t('kcUsersManagement') }}
+          {{ i18n.t("kcUsersManagement") }}
         </q-toolbar-title>
 
         <div>
-          <LanguageSelector
-          />
+          <LanguageSelector />
         </div>
       </q-toolbar>
     </q-header>
 
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-    >
+    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
       <q-list>
-        <q-item-label
-          header
-        >
-          {{ i18n.t('usersManagement') }}
+        <q-item-label header>
+          {{ i18n.t("usersManagement") }}
         </q-item-label>
 
         <EssentialLink
-          v-for="link in linksList"
-          :key="link.title"
-          v-bind="link"
+          :linksList="linksList"
         />
       </q-list>
     </q-drawer>
@@ -49,60 +40,48 @@
 </template>
 
 <script setup>
-import { ref, inject } from 'vue'
-import EssentialLink from 'components/EssentialLink.vue'
-import LanguageSelector from 'components/LanguageSelector.vue'
+import { ref, inject, onBeforeMount, reactive } from "vue";
+import EssentialLink from "components/EssentialLink.vue";
+import LanguageSelector from "components/LanguageSelector.vue";
 
+const i18n = inject("i18n");
+const emitter = inject('emitter')
+const linksList = reactive([
+  {
+    title: i18n.t("users"),
+    caption: i18n.t("usersText"),
+    icon: "person",
+    link: "/users",
+    key: "users"
+  },
+  {
+    title: i18n.t("groups"),
+    caption: i18n.t("groupsText"),
+    icon: "group",
+    link: "/groups",
+    key: "groups"
+  },
+  {
+    title: i18n.t("roles"),
+    caption: i18n.t("rolesText"),
+    icon: "lock",
+    link: "/roles",
+    key: "roles"
+  },
+]);
 
-const i18n = inject('i18n')
-const linksList = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
-]
+const leftDrawerOpen = ref(false);
+const toggleLeftDrawer = () => {
+  leftDrawerOpen.value = !leftDrawerOpen.value;
+};
 
+onBeforeMount(() => {
+  emitter.on('newLocale', () => {
+    for (const newTranslate of linksList) {
+      newTranslate.title = i18n.t(newTranslate.key)
+      newTranslate.caption = i18n.t(`${newTranslate.key}Text`)
+    }
+  })
+})
 
-  const leftDrawerOpen = ref(false)
-  const toggleLeftDrawer = () => {
-    leftDrawerOpen.value = !leftDrawerOpen.value
-  }
 </script>
