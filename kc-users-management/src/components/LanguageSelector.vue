@@ -19,6 +19,7 @@ const i18n = inject("i18n");
 const language = $q.localStorage.getItem("language") || i18n.locale;
 const selectedLocale = ref(loadLanguages().find((ref) => ref.value === language));
 const supportedLocales = ref(loadLanguages());
+const emitter = inject('emitter')
 
 function loadLanguages() {
   return [
@@ -40,6 +41,7 @@ function setLanguages(newLocale) {
   i18n.locale = newLocale.value;
   $q.localStorage.set("language", newLocale.value);
   supportedLocales.value = loadLanguages();
+  emitter.emit('newLocale')
 }
 
 onMounted(() => setLanguages({ value: language }));
