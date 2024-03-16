@@ -11,5 +11,8 @@ export default {
   groups: "Grupos",
   groupsText: "Gestiona tus grupos",
   roles: "Roles",
-  rolesText: "Administrar permisos"
+  rolesText: "Administrar permisos",
+  darkMode: "Dark Mode",
+  logout: "Logout",
+  futureFeature: "Esta función estará habilitada en el futuro, ¡estén atentos!"
 }

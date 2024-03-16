@@ -15,8 +15,13 @@
           {{ i18n.t("kcUsersManagement") }}
         </q-toolbar-title>
 
-        <div>
-          <LanguageSelector />
+        <div class="row flex flex-center">
+          <div class="col-6">
+            <LanguageSelector />
+          </div>
+          <div class="col-6">
+            <UserProfile />
+          </div>
         </div>
       </q-toolbar>
     </q-header>
@@ -41,6 +46,7 @@
 
 <script setup>
 import { ref, inject, onBeforeMount, reactive } from "vue";
+import UserProfile from "components/UserProfile.vue";
 import EssentialLink from "components/EssentialLink.vue";
 import LanguageSelector from "components/LanguageSelector.vue";
 

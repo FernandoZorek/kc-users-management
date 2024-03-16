@@ -2,10 +2,12 @@
   <div>
     <q-select
       class="language-select"
-      color="accent" standout
+      color="accent"
       v-model="selectedLocale"
       :options="supportedLocales"
       option-value
+      borderless
+      dense
     />
   </div>
 </template>
@@ -17,31 +19,37 @@ import { useQuasar } from "quasar";
 const $q = useQuasar();
 const i18n = inject("i18n");
 const language = $q.localStorage.getItem("language") || i18n.locale;
-const selectedLocale = ref(loadLanguages().find((ref) => ref.value === language));
+const selectedLocale = ref(
+  loadLanguages().find((ref) => ref.value === language)
+);
 const supportedLocales = ref(loadLanguages());
-const emitter = inject('emitter')
+const emitter = inject("emitter");
 
 function loadLanguages() {
   return [
     {
       value: "en-US",
-      label: i18n.t("english")
-    }, {
+      label: i18n.t("english"),
+    },
+    {
       value: "es-ES",
-      label: i18n.t("spanish")
-    }, {
+      label: i18n.t("spanish"),
+    },
+    {
       value: "pt-BR",
-      label: i18n.t("portuguese")
-    }
+      label: i18n.t("portuguese"),
+    },
   ];
 }
 
 function setLanguages(newLocale) {
-  import(`quasar/lang/${i18n.locale}`).then((language) => $q.lang.set(language.default));
+  import(`quasar/lang/${i18n.locale}`).then((language) =>
+    $q.lang.set(language.default)
+  );
   i18n.locale = newLocale.value;
   $q.localStorage.set("language", newLocale.value);
   supportedLocales.value = loadLanguages();
-  emitter.emit('newLocale')
+  emitter.emit("newLocale");
 }
 
 onMounted(() => setLanguages({ value: language }));

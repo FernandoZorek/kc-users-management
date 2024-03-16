@@ -131,6 +131,6 @@ export default boot(async ({ router, app }) => {
     })
 
     await loadKeycloakScript()
-    app.provide('keycloakToken', app.config.globalProperties.$auth)
+    app.provide('keycloak', app.config.globalProperties.$auth)
   }
 })
