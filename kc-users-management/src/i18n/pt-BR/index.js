@@ -11,5 +11,8 @@ export default {
   groups: "Grupos",
   groupsText: "Gerencie seus grupos",
   roles: "Permissões",
-  rolesText: "Gerencie as permissões"
+  rolesText: "Gerencie as permissões",
+  darkMode: "Mode escuro",
+  logout: "Sair",
+  futureFeature: "Este recurso será habilitado no futuro, aguarde!"
 }
