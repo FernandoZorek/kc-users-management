@@ -5,6 +5,11 @@ export default {
   kcUsersManagement: 'Keycloak - Gerenciamento de usuários',
   english: 'Inglês',
   spanish: "Espanhol",
-  portuguese: "Português"
-
+  portuguese: "Português",
+  users: "Usuários",
+  usersText: "Gerencie seus usuários",
+  groups: "Grupos",
+  groupsText: "Gerencie seus grupos",
+  roles: "Permissões",
+  rolesText: "Gerencie as permissões"
 }
