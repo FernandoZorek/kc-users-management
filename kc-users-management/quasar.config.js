@@ -29,7 +29,8 @@ module.exports = configure(function (ctx) {
       'i18n',
       'axios',
       'authKeycloak',
-      'eventBus'
+      'eventBus',
+      'dateFns'
     ],
 
     // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-css

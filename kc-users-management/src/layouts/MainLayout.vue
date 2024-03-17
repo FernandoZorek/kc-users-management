@@ -50,8 +50,10 @@ import UserProfile from "components/UserProfile.vue";
 import EssentialLink from "components/EssentialLink.vue";
 import LanguageSelector from "components/LanguageSelector.vue";
 
+const api = inject("api");
 const i18n = inject("i18n");
-const emitter = inject('emitter')
+const keycloak = inject("keycloak");
+const emitter = inject('emitter');
 const linksList = reactive([
   {
     title: i18n.t("users"),
@@ -82,6 +84,7 @@ const toggleLeftDrawer = () => {
 };
 
 onBeforeMount(() => {
+  api.defaults.headers.common['Authorization'] = `Bearer ${keycloak.getAccessToken()}`
   emitter.on('newLocale', () => {
     for (const newTranslate of linksList) {
       newTranslate.title = i18n.t(newTranslate.key)
