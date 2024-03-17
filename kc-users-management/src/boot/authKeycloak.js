@@ -1,6 +1,7 @@
 import { boot } from 'quasar/wrappers'
 import { LocalStorage } from 'quasar'
 import { multiTenancy, kcGateway, realm, clientId } from '../components/variables.js'
+import { api } from './axios.js'
 
 export default boot(async ({ router, app }) => {
   const params = new Proxy(new URLSearchParams(window.location.search), {
@@ -132,5 +133,6 @@ export default boot(async ({ router, app }) => {
 
     await loadKeycloakScript()
     app.provide('keycloak', app.config.globalProperties.$auth)
+    api.defaults.headers.common['Authorization'] = `Bearer ${app.config.globalProperties.$auth.getAccessToken()}`
   }
 })

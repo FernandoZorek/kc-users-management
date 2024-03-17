@@ -14,5 +14,14 @@ export default {
   rolesText: "Administrar permisos",
   darkMode: "Dark Mode",
   logout: "Logout",
-  futureFeature: "Esta función estará habilitada en el futuro, ¡estén atentos!"
+  futureFeature: "Esta función estará habilitada en el futuro, ¡estén atentos!",
+  errorLoadingData: "¡Error al cargar datos!",
+  errorSaveData: "¡Error al guardar datos!",
+  saveData: "¡Datos guardados exitosamente!",
+  firstName: "Nombre",
+  lastName: "Apellido",
+  username: "Nombre de Usuario",
+  email: "Email",
+  createdAt: "Creado en",
+  dateMask: 'yyyy-MM-dd'
 }

@@ -37,19 +37,14 @@
 <script setup>
 import { inject, onMounted, ref, watch } from "vue";
 import { useQuasar } from "quasar";
-import { multiTenancy, kcGateway, realm } from '../components/variables.js';
+import { multiTenancy, realm } from '../components/variables.js';
 
 const $q = useQuasar();
 const i18n = inject("i18n");
 const keycloak = inject("keycloak");
 const userName = ref('')
 const darkMode = ref(false)
-const logout = `/auth/realms/${multiTenancy ? getRealm() : realm}/protocol/openid-connect/logout`
-
-function getRealm() {
-    const searchParams = new URLSearchParams(window.location.search);
-    return searchParams.get('realm');
-}
+const logout = `/auth/realms/${multiTenancy ? $q.localStorage.getItem("multiTenancyRealm") : realm}/protocol/openid-connect/logout`
 
 onMounted(async () => {
   const { family_name, preferred_username } = await keycloak.getUser()

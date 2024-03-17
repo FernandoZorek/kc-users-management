@@ -14,5 +14,14 @@ export default {
   rolesText: "Gerencie as permissões",
   darkMode: "Mode escuro",
   logout: "Sair",
-  futureFeature: "Este recurso será habilitado no futuro, aguarde!"
+  futureFeature: "Este recurso será habilitado no futuro, aguarde!",
+  errorLoadingData: "Erro ao carregar dados!",
+  errorSaveData: "Erro ao salvar dados!",
+  saveData: "Dados salvos com sucesso!",
+  firstName: "Nome",
+  lastName: "Sobrenome",
+  username: "Usuário",
+  email: "E-mail",
+  createdAt: "Criado em",
+  dateMask: 'dd/MM/yyyy'
 }
