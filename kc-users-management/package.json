@@ -13,23 +13,24 @@
     "build": "quasar build"
   },
   "dependencies": {
-    "axios": "^1.2.1",
-    "vue-i18n": "^9.0.0",
     "@quasar/extras": "^1.16.4",
+    "axios": "^1.2.1",
     "core-js": "^3.31.1",
+    "date-fns": "^3.5.0",
     "mitt": "^3.0.0",
     "quasar": "^2.8.0",
     "vue": "^3.4.18",
+    "vue-i18n": "^9.0.0",
     "vue-router": "^4.0.12"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.13.14",
+    "@quasar/app-webpack": "^3.9.2",
     "eslint": "^8.11.0",
+    "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-vue": "^9.0.0",
     "eslint-webpack-plugin": "^4.0.0",
-    "eslint-config-prettier": "^8.1.0",
-    "prettier": "^2.5.1",
-    "@quasar/app-webpack": "^3.9.2"
+    "prettier": "^2.5.1"
   },
   "browserslist": [
     "last 10 Chrome versions",
