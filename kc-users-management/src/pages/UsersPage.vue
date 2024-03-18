@@ -4,14 +4,14 @@
       :title="i18n.t('users')"
       :rows="rows"
       :columns="columns"
-      row-key="name"
+      row-key="username"
     />
   </div>
 </template>
 
 <script setup>
 import { inject, reactive, ref, onBeforeMount, onMounted } from "vue";
-import Users from "../services/Users.js";
+import Users from "../services/users";
 const i18n = inject("i18n");
 const emitter = inject("emitter");
 const formatDate = inject("formatDate");
