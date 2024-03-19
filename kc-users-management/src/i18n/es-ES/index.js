@@ -26,5 +26,6 @@ export default {
   username: "Nombre de Usuario",
   email: "Email",
   createdAt: "Creado en",
-  dateMask: 'yyyy-MM-dd'
+  dateMask: "yyyy-MM-dd",
+  description: "Descripción"
 }
