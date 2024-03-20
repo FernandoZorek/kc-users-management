@@ -1,9 +1,9 @@
 export default {
-  failed: 'Action failed',
-  success: 'Action was successful',
-  usersManagement: 'Gestión de usuarios',
-  kcUsersManagement: 'Keycloak - Gestión de usuarios',
-  english: 'Inglés',
+  failed: "Action failed",
+  success: "Action was successful",
+  usersManagement: "Gestión de usuarios",
+  kcUsersManagement: "Keycloak - Gestión de usuarios",
+  english: "Inglés",
   spanish: "Español",
   portuguese: "Portugués",
   users: "Usuarios",
@@ -18,6 +18,7 @@ export default {
   errorLoadingData: "¡Error al cargar datos!",
   errorSaveData: "¡Error al guardar datos!",
   saveData: "¡Datos guardados exitosamente!",
+  save: "Ahorrar",
   name: "Nombre",
   path: "Path",
   subGroups: "Subgrupos",
@@ -27,5 +28,8 @@ export default {
   email: "Email",
   createdAt: "Creado en",
   dateMask: "yyyy-MM-dd",
-  description: "Descripción"
-}
+  description: "Descripción",
+  password: "Contraseña",
+  repeatPassword: "Repita la Contraseña",
+  temporaryPassword: "¿Contraseña temporal?"
+};
