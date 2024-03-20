@@ -18,6 +18,7 @@ export default {
   errorLoadingData: "Erro ao carregar dados!",
   errorSaveData: "Erro ao salvar dados!",
   saveData: "Dados salvos com sucesso!",
+  save: "Salvar",
   name: "Nome",
   path: "Rota",
   subGroups: "Sub Grupos",
@@ -27,5 +28,8 @@ export default {
   email: "E-mail",
   createdAt: "Criado em",
   dateMask: "dd/MM/yyyy",
-  description: "Descrição"
+  description: "Descrição",
+  password: "Senha",
+  repeatPassword: "Repita Senha",
+  temporaryPassword: "Senha Temporaria?",
 }

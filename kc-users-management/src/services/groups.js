@@ -109,6 +109,34 @@ const Groups = {
           timeout: 2000,
         });
       });
+  },
+  async extract(data) {
+    const subGroups = [];
+    function extractPaths(groups) {
+      const paths = [];
+      if (groups) {
+        for (const group of groups) {
+          if (group.subGroups.length) {
+            paths.push(group.path);
+            paths.push(extractPaths(group.subGroups));
+          } else {
+            paths.push(group.path);
+          }
+          if(group) {
+            group.subGroups = group.subGroups.length ? extractPaths(group.subGroups) : []
+            subGroups.push(group)
+          }
+        }
+      }
+      return paths.join("<br>");
+    }
+    data.map((el) => {
+      return {
+        ...el,
+        subGroups: el.subGroups.length ? extractPaths(el.subGroups).groups : [],
+      };
+    });
+    return data.concat(subGroups)
   }
 };
 

@@ -5,13 +5,19 @@
       :rows="rows"
       :columns="columns"
       row-key="username"
+      @row-click="onRowClick"
     />
   </div>
+  <ModalUser
+    :modal="modal"
+    :modalData="modalData"
+  />
 </template>
 
 <script setup>
 import { inject, reactive, ref, onBeforeMount, onMounted } from "vue";
 import Users from "../services/users";
+import ModalUser from "../modals/ModalUser.vue";
 const i18n = inject("i18n");
 const emitter = inject("emitter");
 const formatDate = inject("formatDate");
@@ -49,6 +55,16 @@ const columns = reactive([
 ]);
 
 const rows = ref([]);
+
+const modal = ref(false);
+const modalData = ref({});
+
+function onRowClick (evt, row) {
+  modal.value = !modal.value
+  modalData.value = row
+  console.log(modal.value)
+}
+
 onBeforeMount(() => {
   emitter.on("newLocale", () => {
     for (const newTranslate of columns) {

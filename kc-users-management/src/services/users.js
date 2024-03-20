@@ -87,6 +87,124 @@ const Users = {
           timeout: 2000,
         });
       });
+  },
+  async resetPassword(id, data) {
+    return api
+      .put(`${uri}/${id}/reset-password`, data)
+      .then(() => {
+        Notify.create({
+          color: "positive",
+          position: "top-right",
+          message: i18n.t("saveData"),
+          icon: "check",
+          timeout: 2000,
+        });
+      })
+      .catch((e) => {
+        Notify.create({
+          color: "negative",
+          position: "top-right",
+          message: i18n.t("errorSaveData"),
+          icon: "report_problem",
+          timeout: 2000,
+        });
+      });
+  },
+  async listGroups(id) {
+    return api
+      .get(`${uri}/${id}/groups`)
+      .then((response) => {
+        return response.data.data || response.data;
+      })
+      .catch((e) => {
+        Notify.create({
+          color: "negative",
+          position: "top-right",
+          message: i18n.t("errorLoadingData"),
+          icon: "report_problem",
+          timeout: 2000,
+        });
+      });
+  },
+  async listRoles(id) {
+    return api
+      .get(`${uri}/${id}/role-mappings/realm`)
+      .then((response) => {
+        return response.data.data || response.data;
+      })
+      .catch((e) => {
+        Notify.create({
+          color: "negative",
+          position: "top-right",
+          message: i18n.t("errorLoadingData"),
+          icon: "report_problem",
+          timeout: 2000,
+        });
+      });
+  },
+  async addGroup(userId, groupId) {
+    return api
+      .put(`${uri}/${userId}/groups/${groupId}`)
+      .then((response) => {
+        return response.data.data || response.data;
+      })
+      .catch((e) => {
+        Notify.create({
+          color: "negative",
+          position: "top-right",
+          message: i18n.t("errorLoadingData"),
+          icon: "report_problem",
+          timeout: 2000,
+        });
+      });
+  },
+  async removeGroup(userId, groupId) {
+    return api
+      .delete(`${uri}/${userId}/groups/${groupId}`)
+      .then((response) => {
+        return response.data.data || response.data;
+      })
+      .catch((e) => {
+        Notify.create({
+          color: "negative",
+          position: "top-right",
+          message: i18n.t("errorLoadingData"),
+          icon: "report_problem",
+          timeout: 2000,
+        });
+      });
+  },
+  async addRole(id, data) {
+    return api
+      .post(`${uri}/${id}/role-mappings/realm`, data)
+      .then((response) => {
+        return response.data.data || response.data;
+      })
+      .catch((e) => {
+        Notify.create({
+          color: "negative",
+          position: "top-right",
+          message: i18n.t("errorLoadingData"),
+          icon: "report_problem",
+          timeout: 2000,
+        });
+      });
+  },
+  async removeRole(id, data) {
+    return api
+      .delete(`${uri}/${id}/role-mappings/realm`, data)
+      .then((response) => {
+        return response.data.data || response.data;
+      })
+      .catch((e) => {
+        Notify.create({
+          color: "negative",
+          position: "top-right",
+          message: i18n.t("errorLoadingData"),
+          icon: "report_problem",
+          timeout: 2000,
+        });
+      });
   }
 };
 

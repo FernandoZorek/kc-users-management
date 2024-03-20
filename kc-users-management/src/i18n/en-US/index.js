@@ -18,6 +18,7 @@ export default {
   errorLoadingData: "Error loading data!",
   errorSaveData: "Error to save data!",
   saveData: "Data saved successfully!",
+  save: "Save",
   name: "Name",
   path: "Path",
   subGroups: "Sub Groups",
@@ -27,5 +28,8 @@ export default {
   email: "Email",
   createdAt: "Created At",
   dateMask: "yyyy-MM-dd",
-  description: "Description"
+  description: "Description",
+  password: "Password",
+  repeatPassword: "Repeat password",
+  temporaryPassword: "Temporary password?",
 };
