@@ -174,7 +174,7 @@ const Users = {
         });
       });
   },
-  async addRole(id, data) {
+  async addRoles(id, data) {
     return api
       .post(`${uri}/${id}/role-mappings/realm`, data)
       .then((response) => {
@@ -190,9 +190,9 @@ const Users = {
         });
       });
   },
-  async removeRole(id, data) {
+  async removeRoles(id, data) {
     return api
-      .delete(`${uri}/${id}/role-mappings/realm`, data)
+      .delete(`${uri}/${id}/role-mappings/realm`, { data })
       .then((response) => {
         return response.data.data || response.data;
       })

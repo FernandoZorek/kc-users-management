@@ -147,7 +147,7 @@
 </template>
 
 <script setup>
-import { inject, ref, watch, computed, reactive } from "vue";
+import { computed, inject, reactive, ref, watch } from "vue";
 import { useQuasar } from "quasar";
 import Users from "../services/users";
 import Groups from "../services/groups";
@@ -235,6 +235,7 @@ async function groupsLoad() {
 async function rolesLoad() {
   rolesList.value = (await Roles.query()).map((el) => {
     return {
+      ...el,
       label: el.name,
       value: el.id,
     };
@@ -295,7 +296,7 @@ async function saveData() {
       });
     }
     if (groupsUser.value !== dataUser.groups) {
-      const checkGroups = checkNewData(groupsUser.value, dataUser.groups);
+      const checkGroups = await checkNewData(groupsUser.value, dataUser.groups);
       if (checkGroups.added) {
         for await (const group of checkGroups.added) {
           await Users.addGroup(dataUser.id, group);
@@ -308,20 +309,30 @@ async function saveData() {
       }
     }
     if (rolesUser.value !== dataUser.roles) {
-      const checkRoles = checkNewData(rolesUser.value, dataUser.roles);
+      const checkRoles = await checkNewData(rolesUser.value, dataUser.roles);
       if (checkRoles.added) {
-        for await (const role of checkRoles.added) {
-          await Users.addRole(dataUser.id, {
-            id: role,
-          });
-        }
+          const payloadAdd = []
+          for await (const role of checkRoles.added){
+            const find = rolesList.value.find(val => val.id === role)
+            if (find) {
+              delete find.value
+              delete find.label
+              payloadAdd.push(find)
+            }
+          }
+          await Users.addRoles(dataUser.id, payloadAdd);
       }
       if (checkRoles.removed) {
-        for await (const role of checkRoles.removed) {
-          await Users.removeRole(dataUser.id, {
-            id: role,
-          });
-        }
+          const payloadRemoved = []
+            for await (const role of checkRoles.removed){
+              const find = rolesList.value.find(val => val.id === role.value)
+              if (find) {
+                delete find.value
+                delete find.label
+                payloadRemoved.push(find)
+              }
+            }
+          await Users.removeRoles(dataUser.id, payloadRemoved)
       }
     }
     emit("reload", true);
