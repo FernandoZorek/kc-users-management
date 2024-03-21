@@ -8,9 +8,13 @@
       @row-click="onRowClick"
     />
   </div>
+  <q-page-sticky position="bottom-right" :offset="[40, 80]" class="over-all">
+    <q-btn fab icon="add" color="primary" @click="modal=true" class="q-ma-sm"/>
+  </q-page-sticky>
   <ModalUser
     :modal="modal"
     :modalData="modalData"
+    @reload="loadUsers()"
   />
 </template>
 
@@ -65,6 +69,15 @@ function onRowClick (evt, row) {
   console.log(modal.value)
 }
 
+async function loadUsers () {
+  rows.value = (await Users.query()).map(el => {
+    return {
+      ...el,
+      createdAt: formatDate(new Date(el.createdTimestamp), i18n.t('dateMask'))
+    }
+  });
+}
+
 onBeforeMount(() => {
   emitter.on("newLocale", () => {
     for (const newTranslate of columns) {
@@ -73,11 +86,6 @@ onBeforeMount(() => {
   });
 });
 onMounted(async () => {
-  rows.value = (await Users.query()).map(el => {
-    return {
-      ...el,
-      createdAt: formatDate(new Date(el.createdTimestamp), i18n.t('dateMask'))
-    }
-  });
+  await loadUsers()
 });
 </script>
