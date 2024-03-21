@@ -19,6 +19,8 @@ export default {
   errorSaveData: "¡Error al guardar datos!",
   saveData: "¡Datos guardados exitosamente!",
   save: "Ahorrar",
+  delete: "Borrar",
+  deleteText: "¿Realmente deseas eliminar este registro?",
   name: "Nombre",
   path: "Path",
   subGroups: "Subgrupos",

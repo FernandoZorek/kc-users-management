@@ -19,6 +19,8 @@ export default {
   errorSaveData: "Erro ao salvar dados!",
   saveData: "Dados salvos com sucesso!",
   save: "Salvar",
+  delete: "Deletar",
+  deleteText: "Você realmente deseja deletar esse registro?",
   name: "Nome",
   path: "Rota",
   subGroups: "Sub Grupos",
