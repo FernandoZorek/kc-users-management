@@ -6,6 +6,7 @@
       :columns="columns"
       :pagination="initialPagination"
       row-key="id"
+      @row-click="onRowClick"
     >
       <template v-slot:body-cell="props">
         <q-td
@@ -21,19 +22,21 @@
       </template>
     </q-table>
   </div>
+  <ModalGroup :modal="modal" :modalData="modalData" @reload="loadGroups()" />
 </template>
 
 <script setup>
 import { inject, reactive, ref, onBeforeMount, onMounted } from "vue";
 import Groups from "../services/groups";
+import ModalGroup from "../modals/ModalGroup.vue";
 const i18n = inject("i18n");
 const emitter = inject("emitter");
 
 const initialPagination = {
-        sortBy: 'path',
-        descending: false,
-        rowsPerPage: 10
-      }
+  sortBy: "path",
+  descending: false,
+  rowsPerPage: 10,
+};
 
 const columns = reactive([
   {
@@ -58,6 +61,21 @@ const columns = reactive([
 ]);
 
 const rows = ref([]);
+const modal = ref(false);
+const modalData = ref({});
+
+function onRowClick(evt, row) {
+  modal.value = !modal.value;
+  row.groupsList = rows.value;
+  modalData.value = row;
+}
+
+async function loadGroups() {
+  const groups = await Groups.query();
+  console.log("groups", groups);
+  rows.value = await Groups.extract(groups);
+  console.log("rows.value", rows.value);
+}
 
 onBeforeMount(() => {
   emitter.on("newLocale", () => {
@@ -68,7 +86,6 @@ onBeforeMount(() => {
 });
 
 onMounted(async () => {
-  const groups = await Groups.query()
-  rows.value = await Groups.extract(groups)
+  await loadGroups();
 });
 </script>

@@ -22,7 +22,7 @@ const Groups = {
         });
       });
   },
-  async created(data) {
+  async create(data) {
     return api
       .post(uri, data)
       .then(() => {
@@ -68,7 +68,7 @@ const Groups = {
   },
   async move(data, id) {
     return api
-      .put(`${uri}/${id}/children`, data)
+      .post(`${uri}/${id}/children`, data)
       .then(() => {
         Notify.create({
           color: "positive",

@@ -34,4 +34,5 @@ export default {
   password: "Senha",
   repeatPassword: "Repita Senha",
   temporaryPassword: "Senha Temporaria?",
+  source: "Raiz"
 }

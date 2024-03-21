@@ -33,5 +33,6 @@ export default {
   description: "Descripción",
   password: "Contraseña",
   repeatPassword: "Repita la Contraseña",
-  temporaryPassword: "¿Contraseña temporal?"
+  temporaryPassword: "¿Contraseña temporal?",
+  source: "Fuente"
 };
