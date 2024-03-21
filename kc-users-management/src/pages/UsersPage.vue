@@ -66,7 +66,6 @@ const modalData = ref({});
 function onRowClick (evt, row) {
   modal.value = !modal.value
   modalData.value = row
-  console.log(modal.value)
 }
 
 async function loadUsers () {
