@@ -34,4 +34,5 @@ export default {
   password: "Password",
   repeatPassword: "Repeat password",
   temporaryPassword: "Temporary password?",
+  source: "Source"
 };
