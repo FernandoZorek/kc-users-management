@@ -19,6 +19,8 @@ export default {
   errorSaveData: "Error to save data!",
   saveData: "Data saved successfully!",
   save: "Save",
+  delete: "Delete",
+  deleteText: "Do you really want to delete this record?",
   name: "Name",
   path: "Path",
   subGroups: "Sub Groups",

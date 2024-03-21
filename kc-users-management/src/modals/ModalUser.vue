@@ -119,13 +119,23 @@
               unchecked-icon="highlight_off"
             />
           </div>
-          <div class="col-12 row justify-center q-pa-sm">
+          <div class="row justify-center col-12 row q-gutter-md q-pa-md">
             <q-btn
               :label="i18n.t('save')"
               color="secondary"
               :disabled="!right"
-              class="col-6"
+              class="col-3"
               type="submit"
+              :loading="stateBtn"
+              :disable="stateBtn"
+            ></q-btn>
+            <q-btn
+              v-if="dataUser.id"
+              :label="i18n.t('delete')"
+              color="negative"
+              :disabled="!right"
+              class="col-3"
+              @click="deleteUser()"
               :loading="stateBtn"
               :disable="stateBtn"
             ></q-btn>
@@ -138,6 +148,7 @@
 
 <script setup>
 import { inject, ref, watch, computed, reactive } from "vue";
+import { useQuasar } from "quasar";
 import Users from "../services/users";
 import Groups from "../services/groups";
 import Roles from "../services/roles";
@@ -152,7 +163,8 @@ const props = defineProps({
     default: () => {},
   },
 });
-const emit = defineEmits(['reload'])
+const $q = useQuasar();
+const emit = defineEmits(["reload"]);
 const modal = computed(() => props.modal);
 const data = computed(() => props.modalData);
 const isModalOpen = ref(false);
@@ -160,24 +172,24 @@ const stateBtn = ref(false);
 const right = ref(true);
 const i18n = inject("i18n");
 const _ = inject("_");
-const rolesList = ref([])
-const rolesUser = ref([])
-const groupsList = ref([])
-const groupsUser = ref([])
+const rolesList = ref([]);
+const rolesUser = ref([]);
+const groupsList = ref([]);
+const groupsUser = ref([]);
 const dataUser = reactive({
-  id: '',
-  firstName: '',
-  lastName: '',
-  email: '',
-  username: '',
+  id: "",
+  firstName: "",
+  lastName: "",
+  email: "",
+  username: "",
   temporary: true,
-  password: '',
-  password2: '',
+  password: "",
+  password2: "",
   groups: [],
   roles: [],
   isPwd: true,
-  isPwd2: true
-})
+  isPwd2: true,
+});
 
 function passCheck(val) {
   if (dataUser.password) {
@@ -185,6 +197,20 @@ function passCheck(val) {
   }
   return true;
 }
+function deleteUser () {
+      $q.dialog({
+        title: i18n.t('delete'),
+        message: i18n.t('deleteText'),
+        cancel: true,
+        persistent: true
+      }).onOk(async () => {
+        await Users.delete(dataUser.id);
+        emit("reload", true);
+        isModalOpen.value = false;
+      }).onCancel(() => {
+        return true
+      })
+    }
 
 async function groupsLoad() {
   const groups = await Groups.query();
@@ -194,7 +220,7 @@ async function groupsLoad() {
       value: el.id,
     };
   });
-  if(dataUser.id) {
+  if (dataUser.id) {
     const listUsers = await Users.listGroups(dataUser.id);
     groupsUser.value = listUsers.map((el) => {
       return {
@@ -202,7 +228,7 @@ async function groupsLoad() {
         value: el.id,
       };
     });
-    dataUser.groups = groupsUser.value
+    dataUser.groups = groupsUser.value;
   }
 }
 
@@ -213,7 +239,7 @@ async function rolesLoad() {
       value: el.id,
     };
   });
-  if(dataUser.id) {
+  if (dataUser.id) {
     const listUsers = await Users.listRoles(dataUser.id);
     rolesUser.value = listUsers.map((el) => {
       return {
@@ -221,10 +247,9 @@ async function rolesLoad() {
         value: el.id,
       };
     });
-    dataUser.roles = rolesUser.value
+    dataUser.roles = rolesUser.value;
   }
 }
-
 
 async function checkNewData(currentData, newData) {
   const currentDataStr = _.map(currentData, JSON.stringify);
@@ -235,7 +260,7 @@ async function checkNewData(currentData, newData) {
 
   const addedDataStr = _.difference(newDataStr, currentDataStr);
   const addedData = _.map(addedDataStr, JSON.parse);
-  return { removed: removedData, added: addedData }
+  return { removed: removedData, added: addedData };
 }
 
 async function saveData() {
@@ -247,28 +272,30 @@ async function saveData() {
           firstName: dataUser.firstName,
           lastName: dataUser.lastName,
           username: dataUser.username,
-          email: dataUser.email
+          email: dataUser.email,
         },
         dataUser.id
       );
-    } else  {
+    } else {
       await Users.create({
-          firstName: dataUser.firstName,
-          lastName: dataUser.lastName,
-          username: dataUser.username,
-          email: dataUser.email
-        });
-      dataUser.id = (await Users.query()).find(el => el.username === dataUser.username).id;
+        firstName: dataUser.firstName,
+        lastName: dataUser.lastName,
+        username: dataUser.username,
+        email: dataUser.email,
+      });
+      dataUser.id = (await Users.query()).find(
+        (el) => el.username === dataUser.username
+      ).id;
     }
     if (dataUser.password) {
-          await Users.resetPassword(dataUser.id, {
-            temporary: dataUser.temporary,
-            type: "password",
-            value: dataUser.password
-          });
-      }
+      await Users.resetPassword(dataUser.id, {
+        temporary: dataUser.temporary,
+        type: "password",
+        value: dataUser.password,
+      });
+    }
     if (groupsUser.value !== dataUser.groups) {
-      const checkGroups = checkNewData(groupsUser.value, dataUser.groups)
+      const checkGroups = checkNewData(groupsUser.value, dataUser.groups);
       if (checkGroups.added) {
         for await (const group of checkGroups.added) {
           await Users.addGroup(dataUser.id, group);
@@ -281,31 +308,27 @@ async function saveData() {
       }
     }
     if (rolesUser.value !== dataUser.roles) {
-      const checkRoles = checkNewData(rolesUser.value, dataUser.roles)
+      const checkRoles = checkNewData(rolesUser.value, dataUser.roles);
       if (checkRoles.added) {
         for await (const role of checkRoles.added) {
-          await Users.addRole(dataUser.id,
-            {
-              id: role
-            }
-          );
+          await Users.addRole(dataUser.id, {
+            id: role,
+          });
         }
       }
       if (checkRoles.removed) {
         for await (const role of checkRoles.removed) {
-          await Users.removeRole(dataUser.id,
-            {
-              id: role
-            }
-          );
+          await Users.removeRole(dataUser.id, {
+            id: role,
+          });
         }
       }
     }
-    emit('reload', true);
+    emit("reload", true);
     stateBtn.value = false;
     isModalOpen.value = false;
-  } catch(e) {
-    console.log(e)
+  } catch (e) {
+    console.log(e);
   } finally {
     stateBtn.value = false;
   }
