@@ -22,7 +22,7 @@ const Users = {
         });
       });
   },
-  async created(data) {
+  async create(data) {
     return api
       .post(uri, data)
       .then(() => {

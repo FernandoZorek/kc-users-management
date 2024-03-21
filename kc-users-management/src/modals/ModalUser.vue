@@ -152,11 +152,12 @@ const props = defineProps({
     default: () => {},
   },
 });
+const emit = defineEmits(['reload'])
 const modal = computed(() => props.modal);
 const data = computed(() => props.modalData);
 const isModalOpen = ref(false);
 const stateBtn = ref(false);
-const right = ref(false);
+const right = ref(true);
 const i18n = inject("i18n");
 const _ = inject("_");
 const rolesList = ref([])
@@ -193,14 +194,16 @@ async function groupsLoad() {
       value: el.id,
     };
   });
-  const listUsers = await Users.listGroups(dataUser.id);
-  groupsUser.value = listUsers.map((el) => {
-    return {
-      label: el.name,
-      value: el.id,
-    };
-  });
-  dataUser.groups = groupsUser.value
+  if(dataUser.id) {
+    const listUsers = await Users.listGroups(dataUser.id);
+    groupsUser.value = listUsers.map((el) => {
+      return {
+        label: el.name,
+        value: el.id,
+      };
+    });
+    dataUser.groups = groupsUser.value
+  }
 }
 
 async function rolesLoad() {
@@ -210,14 +213,16 @@ async function rolesLoad() {
       value: el.id,
     };
   });
-  const listUsers = await Users.listRoles(dataUser.id);
-  rolesUser.value = listUsers.map((el) => {
-    return {
-      label: el.name,
-      value: el.id,
-    };
-  });
-  dataUser.roles = rolesUser.value
+  if(dataUser.id) {
+    const listUsers = await Users.listRoles(dataUser.id);
+    rolesUser.value = listUsers.map((el) => {
+      return {
+        label: el.name,
+        value: el.id,
+      };
+    });
+    dataUser.roles = rolesUser.value
+  }
 }
 
 
@@ -234,61 +239,76 @@ async function checkNewData(currentData, newData) {
 }
 
 async function saveData() {
-  stateBtn.value = true;
-  if (dataUser.id) {
-    await Users.edit(
-      {
-        firstName: dataUser.firstName,
-        lastName: dataUser.lastName,
-        username: dataUser.username,
-        email: dataUser.email
-      },
-      dataUser.id
-    );
-  }
-  if (dataUser.password) {
-        await Users.resetPassword(dataUser.id, {
-          temporary: dataUser.temporary,
-          type: "password",
-          value: dataUser.password
+  try {
+    stateBtn.value = true;
+    if (dataUser.id) {
+      await Users.edit(
+        {
+          firstName: dataUser.firstName,
+          lastName: dataUser.lastName,
+          username: dataUser.username,
+          email: dataUser.email
+        },
+        dataUser.id
+      );
+    } else  {
+      await Users.create({
+          firstName: dataUser.firstName,
+          lastName: dataUser.lastName,
+          username: dataUser.username,
+          email: dataUser.email
         });
+      dataUser.id = (await Users.query()).find(el => el.username === dataUser.username).id;
     }
-  if (groupsUser.value !== dataUser.groups) {
-    const checkGroups = checkNewData(groupsUser.value, dataUser.groups)
-    if (checkGroups.added) {
-      for await (const group of checkGroups.added) {
-        await Users.addGroup(dataUser.id, group);
+    if (dataUser.password) {
+          await Users.resetPassword(dataUser.id, {
+            temporary: dataUser.temporary,
+            type: "password",
+            value: dataUser.password
+          });
+      }
+    if (groupsUser.value !== dataUser.groups) {
+      const checkGroups = checkNewData(groupsUser.value, dataUser.groups)
+      if (checkGroups.added) {
+        for await (const group of checkGroups.added) {
+          await Users.addGroup(dataUser.id, group);
+        }
+      }
+      if (checkGroups.removed) {
+        for await (const group of checkGroups.removed) {
+          await Users.removeGroup(dataUser.id, group);
+        }
       }
     }
-    if (checkGroups.removed) {
-      for await (const group of checkGroups.removed) {
-        await Users.removeGroup(dataUser.id, group);
+    if (rolesUser.value !== dataUser.roles) {
+      const checkRoles = checkNewData(rolesUser.value, dataUser.roles)
+      if (checkRoles.added) {
+        for await (const role of checkRoles.added) {
+          await Users.addRole(dataUser.id,
+            {
+              id: role
+            }
+          );
+        }
+      }
+      if (checkRoles.removed) {
+        for await (const role of checkRoles.removed) {
+          await Users.removeRole(dataUser.id,
+            {
+              id: role
+            }
+          );
+        }
       }
     }
+    emit('reload', true);
+    stateBtn.value = false;
+    isModalOpen.value = false;
+  } catch(e) {
+    console.log(e)
+  } finally {
+    stateBtn.value = false;
   }
-  if (rolesUser.value !== dataUser.roles) {
-    const checkRoles = checkNewData(rolesUser.value, dataUser.roles)
-    if (checkRoles.added) {
-      for await (const role of checkRoles.added) {
-        await Users.addRole(dataUser.id,
-          {
-            id: role
-          }
-        );
-      }
-    }
-    if (checkRoles.removed) {
-      for await (const role of checkRoles.removed) {
-        await Users.removeRole(dataUser.id,
-          {
-            id: role
-          }
-        );
-      }
-    }
-  }
-  stateBtn.value = false;
-  isModalOpen.value = false;
 }
 
 watch(data, async () => {
@@ -296,12 +316,11 @@ watch(data, async () => {
   dataUser.firstName = data.value.firstName;
   dataUser.lastName = data.value.lastName;
   dataUser.username = data.value.username;
-  right.value = true;
-  await groupsLoad();
-  await rolesLoad();
 });
 watch(modal, async () => {
   isModalOpen.value = true;
   stateBtn.value = false;
+  await groupsLoad();
+  await rolesLoad();
 });
 </script>
