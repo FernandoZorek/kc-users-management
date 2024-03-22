@@ -12,7 +12,13 @@
         />
 
         <q-toolbar-title>
-          {{ i18n.t("kcUsersManagement") }}
+          <q-btn
+            flat
+            color="white"
+            :label="i18n.t('kcUsersManagement')"
+            to="/"
+          />
+          <q-badge color="primary">v1.0.0</q-badge>
         </q-toolbar-title>
 
         <div class="row flex flex-center">
@@ -32,9 +38,7 @@
           {{ i18n.t("usersManagement") }}
         </q-item-label>
 
-        <EssentialLink
-          :linksList="linksList"
-        />
+        <EssentialLink :linksList="linksList" />
       </q-list>
     </q-drawer>
 
@@ -53,28 +57,28 @@ import LanguageSelector from "components/LanguageSelector.vue";
 const api = inject("api");
 const i18n = inject("i18n");
 const keycloak = inject("keycloak");
-const emitter = inject('emitter');
+const emitter = inject("emitter");
 const linksList = reactive([
   {
     title: i18n.t("users"),
     caption: i18n.t("usersText"),
     icon: "person",
     link: "/users",
-    key: "users"
+    key: "users",
   },
   {
     title: i18n.t("groups"),
     caption: i18n.t("groupsText"),
     icon: "group",
     link: "/groups",
-    key: "groups"
+    key: "groups",
   },
   {
     title: i18n.t("roles"),
     caption: i18n.t("rolesText"),
     icon: "lock",
     link: "/roles",
-    key: "roles"
+    key: "roles",
   },
 ]);
 
@@ -84,13 +88,14 @@ const toggleLeftDrawer = () => {
 };
 
 onBeforeMount(() => {
-  api.defaults.headers.common['Authorization'] = `Bearer ${keycloak.getAccessToken()}`
-  emitter.on('newLocale', () => {
+  api.defaults.headers.common[
+    "Authorization"
+  ] = `Bearer ${keycloak.getAccessToken()}`;
+  emitter.on("newLocale", () => {
     for (const newTranslate of linksList) {
-      newTranslate.title = i18n.t(newTranslate.key)
-      newTranslate.caption = i18n.t(`${newTranslate.key}Text`)
+      newTranslate.title = i18n.t(newTranslate.key);
+      newTranslate.caption = i18n.t(`${newTranslate.key}Text`);
     }
-  })
-})
-
+  });
+});
 </script>

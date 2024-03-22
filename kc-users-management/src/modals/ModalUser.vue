@@ -304,7 +304,7 @@ async function saveData() {
       }
       if (checkGroups.removed) {
         for await (const group of checkGroups.removed) {
-          await Users.removeGroup(dataUser.id, group);
+          await Users.removeGroup(dataUser.id, group.value);
         }
       }
     }
