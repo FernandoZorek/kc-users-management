@@ -49,12 +49,10 @@ const logout = `/auth/realms/${multiTenancy ? $q.localStorage.getItem("multiTena
 onMounted(async () => {
   const { family_name, preferred_username } = await keycloak.getUser()
   userName.value = family_name || preferred_username
+  darkMode.value = $q.localStorage.getItem("darkMode") || $q.dark.isActive
 });
-watch(darkMode, async () => {
-  $q.notify({
-    type: 'warning',
-    message: i18n.t("futureFeature"),
-    position: 'top-right'
-  })
+watch(darkMode, async (val) => {
+  $q.dark.set(val)
+  $q.localStorage.set("darkMode", val);
 });
 </script>
