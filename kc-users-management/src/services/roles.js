@@ -68,7 +68,7 @@ const Users = {
   },
   async delete(id) {
     return api
-      .delete(`${uri}/${id}`)
+      .delete(`${uri}-by-id/${id}`)
       .then(() => {
         Notify.create({
           color: "positive",
