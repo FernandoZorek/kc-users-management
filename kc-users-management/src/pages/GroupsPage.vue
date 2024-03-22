@@ -22,6 +22,9 @@
       </template>
     </q-table>
   </div>
+  <q-page-sticky position="bottom-right" :offset="[40, 80]" class="over-all">
+    <q-btn fab icon="add" color="primary" @click="newGroup()" class="q-ma-sm"/>
+  </q-page-sticky>
   <ModalGroup :modal="modal" :modalData="modalData" @reload="loadGroups()" />
 </template>
 
@@ -55,7 +58,7 @@ const columns = reactive([
   {
     name: "subGroups",
     label: i18n.t("subGroups"),
-    field: "subGroups",
+    field: val => val.subGroups ? val.subGroups.join("<br>") : null,
     type: "html",
   },
 ]);
@@ -72,9 +75,12 @@ function onRowClick(evt, row) {
 
 async function loadGroups() {
   const groups = await Groups.query();
-  console.log("groups", groups);
   rows.value = await Groups.extract(groups);
-  console.log("rows.value", rows.value);
+}
+
+async function newGroup() {
+  modal.value = !modal.value;
+  modalData.value = { id: null, groupsList: rows.value };
 }
 
 onBeforeMount(() => {
