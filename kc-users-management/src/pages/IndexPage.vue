@@ -63,7 +63,8 @@ const roles = ref(0)
 
 
 onMounted(async () => {
-  groups.value = (await Groups.query()).length;
+  const listGroups = await Groups.query();
+  groups.value = (await Groups.extract(listGroups)).length;
   users.value = (await Users.query()).length;
   roles.value = (await Roles.query()).length;
 });
