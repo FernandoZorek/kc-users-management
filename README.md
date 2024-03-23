@@ -13,6 +13,9 @@
 - Manage user: list; create; edit; delete; link users to groups; grant roles;
 - Manage groups: list; create; edit; move groups of levels; delete;
 - Manage roles: list; create; edit; delete;
+- Multitenancy: Work with many realm, with only one stack;
+- Multi Language: Choose between English, Spanish and Portuguese;
+- Dark mode: enable/disable dark mode as desired;
 
 
 ## Tech
