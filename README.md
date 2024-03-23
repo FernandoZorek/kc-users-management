@@ -20,6 +20,7 @@
 This project uses several open source projects to function correctly::
 
 - [Docker] - Platform for developing, shipping, and running applications using containerization;
+- [Nginx] - Advanced Load Balancer, Web Server, Reverse Proxy;
 - [Keycloak] - Open-source Identity and Access Management solution;
 - [MYSQL] -  - Relational database management system for data storage;
 - [Node.js] - JavaScript runtime built on Chrome’s V8 JavaScript engine;
@@ -87,6 +88,7 @@ MIT
 
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
 [Docker]: <https://docs.docker.com/>
+[Nginx]: <https://www.nginx.com/>
 [Keycloak]: <https://www.keycloak.org/docs-api/21.0.1/rest-api/index.html#_version_information>
 [MYSQL]: <https://dev.mysql.com/doc/>
 [Node.js]: <https://nodejs.org/docs/latest/api/>
