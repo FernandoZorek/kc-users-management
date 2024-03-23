@@ -4,7 +4,7 @@ import { realm } from "../components/variables.js";
 import { i18n } from "boot/i18n";
 
 const staticRealm = SessionStorage.getItem("multiTenancyRealm") || realm;
-const uri = `/admin/realms/${staticRealm}/groups`
+const uri = `/admin/realms/${staticRealm}/groups`;
 const Groups = {
   async query(data) {
     return api
@@ -116,28 +116,35 @@ const Groups = {
       const paths = [];
       if (groups) {
         for (const group of groups) {
-          if (group.subGroups.length) {
+          const extract = group.subGroups ? group.subGroups.length : 0;
+          if (extract) {
             paths.push(group.path);
-            paths.push(extractPaths(group.subGroups));
           } else {
             paths.push(group.path);
           }
-          if(group) {
-            group.subGroups = group.subGroups.length ? extractPaths(group.subGroups) : []
-            subGroups.push(group)
+          if (group.subGroups) {
+            group.subGroups = extract ? extractPaths(group.subGroups) : [];
+            subGroups.push(group);
           }
         }
       }
-      return paths.join("<br>");
+      return paths;
     }
-    data.map((el) => {
+    const newSubGroups = data.map((el) => {
       return {
         ...el,
-        subGroups: el.subGroups.length ? extractPaths(el.subGroups).groups : [],
+        subGroups: el.subGroups.length ? extractPaths(el.subGroups) : [],
       };
     });
-    return data.concat(subGroups)
-  }
+    const removeRepeats = Object.values(
+      newSubGroups.concat(subGroups).reduce((acc, cur) => {
+        acc[cur.path] = cur;
+        return acc;
+      }, {})
+    );
+
+    return removeRepeats;
+  },
 };
 
 export default Groups;

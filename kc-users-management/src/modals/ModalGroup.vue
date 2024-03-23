@@ -2,7 +2,7 @@
   <q-dialog v-model="isModalOpen" persistent>
     <q-card>
       <q-bar class="bg-primary text-white">
-        {{ data.firstName }}
+        {{ data.name }}
 
         <q-space />
 
@@ -153,12 +153,18 @@ async function saveData() {
 }
 
 watch(data, async () => {
-  dataGroup.id = data.value.id;
-  dataGroup.name = data.value.name;
-  dataGroup.path = data.value.path;
-  dataGroup.groups = data.value.groupsList.find(el => el.path === data.value.path)
-  const startList = [{path: i18n.t('source'), id: ''}]
-  const completList = startList.concat(data.value.groupsList);
+  const startList = {path: i18n.t('source'), id: ''}
+  const completList = [startList].concat(data.value.groupsList);
+  if(data.value.id) {
+    dataGroup.id = data.value.id;
+    dataGroup.name = data.value.name;
+    dataGroup.path = data.value.path;
+    dataGroup.groups = data.value.groupsList.find(el => el.path === data.value.path)
+  } else {
+    dataGroup.name = null
+    dataGroup.path = startList.path
+    dataGroup.groups = startList
+  }
   groupsList.value = completList.filter(el => el.path !== dataGroup.path)
 });
 watch(modal, async () => {
