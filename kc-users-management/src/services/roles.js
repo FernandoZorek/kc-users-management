@@ -22,7 +22,7 @@ const Users = {
         });
       });
   },
-  async created(data) {
+  async create(data) {
     return api
       .post(uri, data)
       .then(() => {
@@ -46,7 +46,7 @@ const Users = {
   },
   async edit(data, id) {
     return api
-      .put(`${uri}/${id}`, data)
+      .put(`${uri}-by-id/${id}`, data)
       .then(() => {
         Notify.create({
           color: "positive",
@@ -68,7 +68,7 @@ const Users = {
   },
   async delete(id) {
     return api
-      .delete(`${uri}/${id}`)
+      .delete(`${uri}-by-id/${id}`)
       .then(() => {
         Notify.create({
           color: "positive",

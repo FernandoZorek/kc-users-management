@@ -6,11 +6,17 @@
       :columns="columns"
       :pagination="initialPagination"
       row-key="id"
+      @row-click="onRowClick"
     />
   </div>
+  <q-page-sticky position="bottom-right" :offset="[40, 80]" class="over-all">
+    <q-btn fab icon="add" color="primary" @click="newRole()" class="q-ma-sm"/>
+  </q-page-sticky>
+  <ModalRole :modal="modal" :modalData="modalData" @reload="loadRoles()" />
 </template>
 
 <script setup>
+import ModalRole from "../modals/ModalRole.vue";
 import { inject, reactive, ref, onBeforeMount, onMounted } from "vue";
 import Roles from "../services/roles";
 const i18n = inject("i18n");
@@ -39,16 +45,31 @@ const columns = reactive([
 ]);
 
 const rows = ref([]);
+const modal = ref(false);
+const modalData = ref({});
 
+function onRowClick (evt, row) {
+  modal.value = !modal.value;
+  modalData.value = row;
+}
 
-onBeforeMount(() => {
+async function loadRoles () {
+  rows.value = await Roles.query()
+}
+
+async function newRole() {
+  modal.value = !modal.value;
+  modalData.value = { id: null, description: null };
+}
+
+onBeforeMount (() => {
   emitter.on("newLocale", () => {
     for (const newTranslate of columns) {
       newTranslate.label = i18n.t(newTranslate.name);
     }
   });
 });
-onMounted(async () => {
-  rows.value = await Roles.query()
+onMounted (async () => {
+  await loadRoles()
 });
 </script>
