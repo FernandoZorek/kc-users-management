@@ -21,14 +21,13 @@ export default boot(async ({ router, app }) => {
     }
 
     const setupKeycloak = async () => {
-
       if (multiTenancy === true) {
         const multiTenancyRealm = LocalStorage.getItem('multiTenancyRealm')
         if (multiTenancyRealm) {
           realm = multiTenancyRealm
         } else {
           realm = params.realm
-          LocalStorage.set('multiTenancyRealm', realm)
+          if (realm) LocalStorage.set('multiTenancyRealm', realm)
         }
       }
 
