@@ -8,6 +8,8 @@
 > The main idea of this application is to serve as a base
 > enabling the development of new features for the needs of each application.
 
+![ScreenShot](https://repository-images.githubusercontent.com/771190809/eab9c2be-0356-4dca-b75a-07eeb515e549)
+
 ## Features
 
 - Manage user: list; create; edit; delete; link users to groups; grant roles;
